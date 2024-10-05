@@ -1,4 +1,4 @@
 # amArBo
-##ecommerce 
-###proyecto: inf 281
-###univ. Juan Pablo Calderon Pancata
+## commerce \n
+## proyecto: inf 281\n
+## univ. Juan Pablo Calderon Pancata

@@ -1,6 +1,6 @@
 <?php
 require 'db.php';
-$cod = random_int(1000, 9999);
+$cod = rand(1000, 9999);
 
 //recaptchav2
 $ip = $_SERVER['REMOTE_ADDR'];
@@ -39,15 +39,12 @@ if (!empty($_POST['btnSignup'])) {
         echo "<script>console.log('campos vacios')</script>";
     }
 }
+
+
 $nombre = $_POST['nom'];
-// echo ($nombre);
-// $nombre = 'Maria';
-
-
-$destino = 'j.pablo.xyz@gmail.com';
-$asunto = 'Correo de verificación';
-
-$mensaje = '
+$to = $_POST['correo'];
+$subject = 'Verificación de correo electrónico';
+$message = '
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -107,6 +104,7 @@ $mensaje = '
                 text-decoration: none;
                 border-radius: 4px;
                 margin-top: 20px;
+                border-radius: 8px 8px 0 0;
             }
 
             .email-footer {
@@ -120,38 +118,48 @@ $mensaje = '
         <div class="container">
             <div class="email-content">
                 <div class="email-header">
-                        <h1>' . $cod . '</h1>
+                        <h1>código: ' . $cod . '</h1>
                 </div>
                 <div class="email-body">
                     <h2>Hola, ' . $nombre . '</h2>
                     <p>Gracias por registrarte en nuestro sitio ampara Artes Bolivia. Por favor, haz clic en el botón de abajo para verificar tu dirección de correo electrónico.</p>
-                    <a href="http://localhost/amArBo/verificar.php?correo='.$_POST['correo'].'" class="verify-btn">Verificar correo</a>
-                    <form action="http://localhost/amArBo/verificar.php?correo='.$_POST['correo'].'" method="POST">
-                        <input type="hidden" name="correo" value="'.$_POST['correo'].'">
-                        <input type="hidden" name="cod" value="'.$cod.'">
-                        <button style="display: none;" type="submit" class="btn btn-primary" >Verificar</button>
-                        <a href="http://localhost/amArBo/verificar.php?correo='.$_POST['correo'].'" class="verify-btn">Verificar correo pos?</a>
-                    </form>
+                    <a href="http://localhost/amArBo/confirmar.php?correo='.$_POST['correo'].'" class="verify-btn">Verificar correo</a>
                     <p>Si no solicitaste este correo, simplemente ignóralo.</p>
                 </div>
                 <div class="email-footer">
                         <p>&copy; 2024 Tu Sitio Web. Todos los derechos reservados.</p>
                 </div>
+                <form action="verificar.php" method="POST">
+                    <input type="hidden" name="correo" value='.$to.'>
+                </form>
             </div>
         </div>
     </body>
     </html>
 ';
+$headers = 'MIME-Version: 1.0' . "\r\n" .
+     'Content-type: text/html; charset=utf-8' . "\r\n" .
+    'From: j.pablo.xyz@gmail.com' . "\r\n" .
+    'Reply-To: j.pablo.xyz@gmail.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
 
-$headers = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: amArBo <tu_correo@dominio.com>' . "\r\n";
-$headers .= 'Return-path: <tu_correo@dominio.com>' . "\r\n";
-
-
-if (mail($destino, $asunto, $mensaje, $headers)){
-    echo 'Correo enviado';
-    echo 'favor de verificar su correo';
-}
+$res='';
+if (mail($to, $subject, $message, $headers))
+    $res = 'Por favor, revisa tu correo electrónico para verificar tu dirección de correo electrónico';
 else
-    echo 'Error al enviar correo';
+    $res  = 'Error al enviar correo';
+echo "<br>";
+echo $cod;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mail</title>
+</head>
+<body>
+    <h2> <?= $res ?> </h2>
+</body>
+</html>

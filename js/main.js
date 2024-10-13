@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Validar la contraseña mientras se escribe
     passwordInput.addEventListener('input', function () {
-        if (regex.test(passwordInput.value)) {
+        // Verificar que tenga al menos 8 caracteres y que coincida con el regex
+        if (passwordInput.value.length >= 8 && regex.test(passwordInput.value)) {
             validationMessage.innerText = "válido";
             validationMessage.style.color = "green";
         } else {
@@ -31,22 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selecciona los dos campos de contraseña y el mensaje de validación
     const passwordInput = document.getElementById('password');
     const passwordInput2 = document.getElementById('password2');
-    const passwordToggle = document.getElementById('eyepassword2');
+    const passwordToggle2 = document.getElementById('eyepassword2');
     const validationMessage = document.getElementById('campoOK2');
 
     // Validar mientras se escribe en el segundo campo de contraseña
     passwordInput2.addEventListener('input', function () {
-        // Verifica si ambas contraseñas coinciden
-        if (passwordInput.value === passwordInput2.value) {
-            validationMessage.innerText = "Las contraseñas coinciden";
-            validationMessage.style.color = "green";
-        } else {
-            validationMessage.innerText = "Las contraseñas no coinciden";
-            validationMessage.style.color = "red";
-        }
 
         // Alternar la visibilidad de la contraseña al hacer clic en el icono
-        passwordToggle.addEventListener('click', function () {
+        passwordToggle2.addEventListener('click', function () {
             const type = passwordInput2.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput2.setAttribute('type', type);
 
@@ -54,5 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });
+         // Verifica si ambas contraseñas coinciden
+         if (passwordInput.value === passwordInput2.value) {
+            validationMessage.innerText = "Las contraseñas coinciden";
+            validationMessage.style.color = "green";
+        } else {
+            validationMessage.innerText = "Las contraseñas no coinciden";
+            validationMessage.style.color = "red";
+        }
     })
 });
